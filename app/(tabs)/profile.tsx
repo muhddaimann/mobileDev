@@ -1,21 +1,29 @@
-import { StyleSheet, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import { router } from 'expo-router';
+import React, { useContext } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Text, Button, Card } from 'react-native-paper';
+import { AuthContext } from '@/contexts/authContext';
 
 export default function Profile() {
-  const handleLogout = () => {
-    global.username = undefined;
-    router.replace('/login');
-  };
+  const auth = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-      <Text variant="headlineMedium" style={styles.username}>
-        {global.username}
-      </Text>
-      <Button mode="contained" onPress={handleLogout} style={styles.button}>
-        Logout
-      </Button>
+      <Card style={styles.card}>
+        <Card.Title title="Profile" />
+        <Card.Content>
+          <Text variant="headlineSmall" style={styles.username}>
+            {auth?.user?.username || 'Guest'}
+          </Text>
+          <Text variant="bodyMedium">Welcome to your profile page.</Text>
+        </Card.Content>
+        {auth?.user && (
+          <Card.Actions>
+            <Button mode="contained" onPress={auth.logout} style={styles.button}>
+              Logout
+            </Button>
+          </Card.Actions>
+        )}
+      </Card>
     </View>
   );
 }
@@ -23,15 +31,23 @@ export default function Profile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  card: {
+    width: '100%',
+    maxWidth: 400,
+    padding: 20,
+    alignItems: 'center',
   },
   username: {
-    marginBottom: 24,
+    textAlign: 'center',
+    marginBottom: 10,
+    fontWeight: 'bold',
   },
   button: {
-    width: '100%',
-    maxWidth: 200,
+    marginTop: 12,
   },
 });

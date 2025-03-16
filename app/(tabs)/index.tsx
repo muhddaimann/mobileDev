@@ -1,15 +1,30 @@
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import React, { useContext } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Text, Button, Card } from 'react-native-paper';
+import { AuthContext } from '@/contexts/authContext';
 
 export default function Home() {
+  const auth = useContext(AuthContext);
+
   return (
     <View style={styles.container}>
-      <Text variant="headlineMedium" style={styles.welcome}>
-        Welcome, {global.username}!
-      </Text>
-      <Text variant="bodyLarge" style={styles.subtitle}>
-        Thanks for using our app
-      </Text>
+      <Card style={styles.card}>
+        <Card.Content>
+          <Text variant="headlineMedium" style={styles.welcomeText}>
+            Welcome, {auth?.user?.username || 'Guest'}!
+          </Text>
+          <Text variant="bodyMedium">
+            This is your home screen. Enjoy your session!
+          </Text>
+        </Card.Content>
+        {auth?.user && (
+          <Card.Actions>
+            <Button mode="contained" onPress={auth.logout} style={styles.button}>
+              Logout
+            </Button>
+          </Card.Actions>
+        )}
+      </Card>
     </View>
   );
 }
@@ -17,15 +32,22 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
+    backgroundColor: '#f5f5f5',
   },
-  welcome: {
-    marginBottom: 8,
+  card: {
+    width: '100%',
+    maxWidth: 400,
+    padding: 20,
+    alignItems: 'center',
   },
-  subtitle: {
+  welcomeText: {
     textAlign: 'center',
-    opacity: 0.7,
+    marginBottom: 10,
+  },
+  button: {
+    marginTop: 12,
   },
 });
