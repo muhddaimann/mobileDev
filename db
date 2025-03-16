@@ -1,0 +1,23 @@
+mobileDev/
+├─ app/
+│  ├─ (auth)/
+│  │  └─ login.tsx
+│  ├─ (tabs)/
+│  │  ├─ _layout.tsx
+│  │  ├─ index.tsx
+│  │  └─ profile.tsx
+│  ├─ _layout.tsx
+│  └─ index.tsx
+├─ assets/
+│  └─ images/
+├─ components/
+│  └─ shared/
+├─ contexts/
+│  ├─ api/
+│  │  ├─ api.tsx
+│  │  └─ auth.tsx
+│  ├─ authContext.tsx
+│  ├─ modeContext.tsx
+│  └─ tokenStorage.tsx
+└─ hooks/
+   └─ useFrameworkReady.ts
