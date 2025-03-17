@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { useTheme } from "react-native-paper";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
-export default function Landing() {
+export default function Login() {
   const router = useRouter();
   const { colors } = useTheme();
 
@@ -13,7 +13,7 @@ export default function Landing() {
       <Text style={[styles.subtitle, { color: colors.onBackground }]}>
         Slowly but Surely
       </Text>
-      <TouchableOpacity style={[styles.button, { backgroundColor: colors.primary }]} onPress={() => router.replace('/(tabs)')}>
+      <TouchableOpacity style={[styles.button, { backgroundColor: colors.primary }]} onPress={() => router.push('/welcome')}>
         <Text style={[styles.buttonText, { color: colors.onPrimary }]}>Enter App</Text>
       </TouchableOpacity>
     </View>

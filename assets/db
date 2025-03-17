@@ -12,9 +12,8 @@ mobileDev/
 │  │  │  └─ index.tsx
 │  │  └─ _layout.tsx
 │  ├─ _layout.tsx
-│  ├─ goodbye.tsx
-│  ├─ welcome.tsx
-│  └─ index.tsx
+│  ├─ index.tsx
+│  └─ login.tsx
 ├─ assets/
 │  └─ images/
 ├─ components/
