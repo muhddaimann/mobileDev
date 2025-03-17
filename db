@@ -1,23 +1,26 @@
 mobileDev/
 ├─ app/
-│  ├─ (auth)/
-│  │  └─ login.tsx
 │  ├─ (tabs)/
 │  │  ├─ _layout.tsx
 │  │  ├─ index.tsx
 │  │  └─ profile.tsx
 │  ├─ _layout.tsx
-│  └─ index.tsx
+│  ├─ index.tsx
+│  └─ login.tsx
 ├─ assets/
 │  └─ images/
 ├─ components/
-│  └─ shared/
+├─ constants/
+│  ├─ color.ts
+│  ├─ shade.ts
+│  └─ theme.ts
 ├─ contexts/
 │  ├─ api/
 │  │  ├─ api.tsx
-│  │  └─ auth.tsx
+│  │  ├─ auth.tsx
+│  │  └─ staff.tsx
 │  ├─ authContext.tsx
 │  ├─ modeContext.tsx
-│  └─ tokenStorage.tsx
+│  └─ tokenContext.tsx
 └─ hooks/
    └─ useFrameworkReady.ts

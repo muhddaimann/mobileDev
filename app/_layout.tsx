@@ -1,19 +1,21 @@
-import { useEffect } from 'react';
 import { Slot } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { PaperProvider } from 'react-native-paper';
-import { AuthProvider } from '@/contexts/authContext';
+import { ModeProvider, useMode } from '@/contexts/modeContext';
 
 export default function RootLayout() {
-  useFrameworkReady();
+  return (
+    <ModeProvider>
+      <ThemedApp />
+    </ModeProvider>
+  );
+}
+
+function ThemedApp() {
+  const { theme } = useMode();
 
   return (
-    <AuthProvider>
-      <PaperProvider>
-        <Slot />
-        <StatusBar style="auto" />
-      </PaperProvider>
-    </AuthProvider>
+    <PaperProvider theme={theme}>
+      <Slot />
+    </PaperProvider>
   );
 }
