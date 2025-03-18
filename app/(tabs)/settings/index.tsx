@@ -25,6 +25,6 @@ export default function Settings() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: wp(5) },
-  button: { paddingVertical: hp(1.8), paddingHorizontal: wp(8), borderRadius: wp(3), width: wp("60%"), marginBottom: hp("2%"), alignItems: 'center' },
+  button: { paddingVertical: hp(1.8), paddingHorizontal: wp(8), borderRadius: wp(3), width: wp("70%"), marginBottom: hp("2%"), alignItems: 'center' },
   buttonText: { fontSize: wp(4.5), fontWeight: '600' },
 });

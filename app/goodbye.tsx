@@ -10,7 +10,7 @@ export default function Goodbye() {
   useEffect(() => {
     setTimeout(() => {
       router.replace('/');
-    }, 2000);
+    }, 1000);
   }, []);
 
   return (

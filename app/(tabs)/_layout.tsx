@@ -1,10 +1,11 @@
 import { Tabs } from 'expo-router';
 import { View, SafeAreaView, Platform } from "react-native";
-import { Home, Clapperboard, Settings } from 'lucide-react-native';
+import { Home, Clapperboard, PaintBucket, Settings } from 'lucide-react-native';
 import { useTheme } from "react-native-paper";
 import Top from "@/components/shared/top";
 import Topp from "@/components/shared/topp";
 import Toppp from "@/components/shared/toppp";
+import Topppp from "@/components/shared/topppp";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 export default function TabLayout() {
@@ -52,10 +53,18 @@ export default function TabLayout() {
               }}
             />
             <Tabs.Screen
+              name="color"
+              options={{
+                title: 'Color',
+                header: () => <Toppp />,
+                tabBarIcon: ({ color, size }) => <PaintBucket color={color} size={size} />,
+              }}
+            />
+            <Tabs.Screen
               name="settings"
               options={{
                 title: 'Settings',
-                header: () => <Toppp />,
+                header: () => <Topppp />,
                 tabBarIcon: ({ color, size }) => <Settings color={color} size={size} />,
               }}
             />

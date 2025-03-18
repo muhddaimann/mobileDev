@@ -3,14 +3,14 @@ import { View, StyleSheet, Text } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-export default function Toppp() {
+export default function Topppp() {
   const { colors } = useTheme();
 
   return (
     <View style={[styles.header, { backgroundColor: colors.background }]}>
       <View style={{ flex: 1 }} />
       
-      <Text style={[styles.title, { color: colors.primary }]}>Color</Text>
+      <Text style={[styles.title, { color: colors.primary }]}>Settings</Text>
 
       <View style={{ flex: 1 }} />
     </View>

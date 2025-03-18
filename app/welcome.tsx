@@ -10,7 +10,7 @@ export default function Welcome() {
   useEffect(() => {
     setTimeout(() => {
       router.replace('/(tabs)/home');
-    }, 2000);
+    }, 1000);
   }, []);
 
   return (
