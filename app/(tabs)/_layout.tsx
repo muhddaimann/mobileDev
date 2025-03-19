@@ -1,11 +1,12 @@
 import { Tabs } from 'expo-router';
 import { View, SafeAreaView, Platform } from "react-native";
-import { Home, Clapperboard, PaintBucket, Settings } from 'lucide-react-native';
+import { Home, Clapperboard, PaintBucket, Laugh, Settings } from 'lucide-react-native';
 import { useTheme } from "react-native-paper";
 import Top from "@/components/shared/top";
 import Topp from "@/components/shared/topp";
 import Toppp from "@/components/shared/toppp";
 import Topppp from "@/components/shared/topppp";
+import Toppppp from "@/components/shared/toppppp";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 export default function TabLayout() {
@@ -61,10 +62,18 @@ export default function TabLayout() {
               }}
             />
             <Tabs.Screen
+              name="meme"
+              options={{
+                title: 'Meme',
+                header: () => <Topppp />,
+                tabBarIcon: ({ color, size }) => <Laugh color={color} size={size} />,
+              }}
+            />
+            <Tabs.Screen
               name="settings"
               options={{
                 title: 'Settings',
-                header: () => <Topppp />,
+                header: () => <Toppppp />,
                 tabBarIcon: ({ color, size }) => <Settings color={color} size={size} />,
               }}
             />

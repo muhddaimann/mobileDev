@@ -10,7 +10,7 @@ export default function Topppp() {
     <View style={[styles.header, { backgroundColor: colors.background }]}>
       <View style={{ flex: 1 }} />
       
-      <Text style={[styles.title, { color: colors.primary }]}>Meme</Text>
+      <Text style={[styles.title, { color: colors.primary }]}>Settings</Text>
 
       <View style={{ flex: 1 }} />
     </View>
