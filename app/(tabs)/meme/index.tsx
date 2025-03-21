@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { View, ScrollView, Image, TouchableOpacity, StyleSheet, ImageLoadEventData, NativeSyntheticEvent, ActivityIndicator, Text, Animated } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, StyleSheet, ImageLoadEventData, NativeSyntheticEvent, Text, Animated } from 'react-native';
+import { ActivityIndicator, useTheme } from 'react-native-paper';
 import { useImgFlipStore } from '@/contexts/api/imgFlip';
-import { useTheme } from 'react-native-paper';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 export default function Meme() {
@@ -16,17 +16,6 @@ export default function Meme() {
     fetchTemplates().finally(() => setLoading(false));
   }, []);
 
-  const leftColumn: any[] = [];
-  const rightColumn: any[] = [];
-
-  templates.forEach((meme, index) => {
-    if (index % 2 === 0) {
-      leftColumn.push(meme);
-    } else {
-      rightColumn.push(meme);
-    }
-  });
-
   const handleImageLoad = (event: NativeSyntheticEvent<ImageLoadEventData>, id: string) => {
     try {
       const { width, height } = event.nativeEvent.source;
@@ -36,7 +25,7 @@ export default function Meme() {
         ...prev,
         [id]: { height: calculatedHeight, isWide: aspectRatio > 1.5 },
       }));
-    } catch (error) {
+    } catch {
       console.warn(`Failed to load image dimensions for ${id}`);
     }
   };
@@ -44,12 +33,7 @@ export default function Meme() {
   const handleLongPress = (id: string, name: string) => {
     setSelectedMeme({ id, name });
     fadeAnim.setValue(1);
-    
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 2000,
-      useNativeDriver: true,
-    }).start(() => setSelectedMeme(null));
+    Animated.timing(fadeAnim, { toValue: 0, duration: 2000, useNativeDriver: true }).start(() => setSelectedMeme(null));
   };
 
   if (loading) {
@@ -60,54 +44,35 @@ export default function Meme() {
     );
   }
 
+  const columns = [[], []] as any[][];
+  templates.forEach((meme, i) => columns[i % 2].push(meme));
+
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.background }]} showsVerticalScrollIndicator={false}>
       <View style={styles.masonryContainer}>
-        <View style={styles.column}>
-          {leftColumn.map((item) => (
-            <TouchableOpacity key={item.id} style={styles.memeItem} onLongPress={() => handleLongPress(item.id, item.name)}>
-              <View style={styles.imageWrapper}>
-                <Image
-                  source={{ uri: item.url }}
-                  style={[
-                    styles.memeImage,
-                    { height: imageData[item.id]?.height || 200 },
-                  ]}
-                  resizeMode={imageData[item.id]?.isWide ? "contain" : "cover"} 
-                  onLoad={(event) => handleImageLoad(event, item.id)}
-                />
-                {selectedMeme?.id === item.id && (
-                  <Animated.View style={[styles.memeNameContainer, { opacity: fadeAnim }]}>
-                    <Text style={styles.memeName}>{selectedMeme?.name ?? ''}</Text>
-                  </Animated.View>
-                )}
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <View style={styles.column}>
-          {rightColumn.map((item) => (
-            <TouchableOpacity key={item.id} style={styles.memeItem} onLongPress={() => handleLongPress(item.id, item.name)}>
-              <View style={styles.imageWrapper}>
-                <Image
-                  source={{ uri: item.url }}
-                  style={[
-                    styles.memeImage,
-                    { height: imageData[item.id]?.height || 200 },
-                  ]}
-                  resizeMode={imageData[item.id]?.isWide ? "contain" : "cover"}
-                  onLoad={(event) => handleImageLoad(event, item.id)}
-                />
-                {selectedMeme?.id === item.id && (
-                  <Animated.View style={[styles.memeNameContainer, { opacity: fadeAnim }]}>
-                    <Text style={styles.memeName}>{selectedMeme?.name ?? ''}</Text>
-                  </Animated.View>
-                )}
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+        {columns.map((column, colIndex) => (
+          <View key={colIndex} style={styles.column}>
+            {column.map((item) => (
+              <TouchableOpacity key={item.id} style={styles.memeItem} onLongPress={() => handleLongPress(item.id, item.name)}>
+                <View style={styles.imageWrapper}>
+                  <Image
+                    source={{ uri: item.url }}
+                    style={[styles.memeImage, { height: imageData[item.id]?.height || wp(60) }]}
+                    resizeMode={imageData[item.id]?.isWide ? 'contain' : 'cover'}
+                    onLoad={(event) => handleImageLoad(event, item.id)}
+                  />
+                  {selectedMeme?.id === item.id && (
+                    <Animated.View style={[styles.memeNameContainer, { backgroundColor: colors.primaryContainer, opacity: fadeAnim }]}>
+                      <Text style={[styles.memeName, { color: colors.primary }]}>
+                        {selectedMeme?.name ?? ''}
+                      </Text>
+                    </Animated.View>
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))}
       </View>
     </ScrollView>
   );
@@ -119,25 +84,8 @@ const styles = StyleSheet.create({
   masonryContainer: { flexDirection: 'row', justifyContent: 'space-between' },
   column: { width: '48%' },
   memeItem: { marginBottom: wp(2) },
-  imageWrapper: {
-    backgroundColor: 'transparent',
-    borderRadius: 12,
-    overflow: 'hidden',
-    elevation: 3,
-    alignItems: 'center',
-  },
-  memeImage: { width: '100%', borderRadius: 12 },
-  memeNameContainer: {
-    position: 'absolute',
-    bottom: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
-  },
-  memeName: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
+  imageWrapper: { borderRadius: wp(3), overflow: 'hidden', elevation: 3, alignItems: 'center', backgroundColor: 'transparent' },
+  memeImage: { width: '100%', borderRadius: wp(3) },
+  memeNameContainer: { position: 'absolute', bottom: wp(2), paddingHorizontal: wp(3), paddingVertical: wp(1.5), borderRadius: wp(2) },
+  memeName: { fontSize: wp(3.5), fontWeight: '600' },
 });

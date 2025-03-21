@@ -28,8 +28,8 @@ export default function TriviaFilter({ onFilterApply }: TriviaFilterProps) {
           setOpen={setOpenDifficulty}
           setValue={setSelectedDifficulty}
           placeholder="Select Difficulty"
-          style={[styles.dropdown, { backgroundColor: colors.outline }, { borderColor: colors.primary } ]}
-          dropDownContainerStyle={styles.dropdownContainer}
+          style={[styles.dropdown, { backgroundColor: colors.secondaryContainer }, { borderColor: colors.primary } ]}
+          dropDownContainerStyle={[styles.dropdownContainer, { backgroundColor: colors.secondaryContainer } ]}
         />
         <DropDownPicker
           open={openCategory}
@@ -38,15 +38,15 @@ export default function TriviaFilter({ onFilterApply }: TriviaFilterProps) {
           setOpen={setOpenCategory}
           setValue={setSelectedCategory}
           placeholder="Select Category"
-          style={[styles.dropdown, { backgroundColor: colors.outline }, { borderColor: colors.primary } ]}
-          dropDownContainerStyle={[styles.dropdownContainer, { backgroundColor: colors.outline } ]}
+          style={[styles.dropdown, { backgroundColor: colors.secondaryContainer }, { borderColor: colors.primary } ]}
+          dropDownContainerStyle={[styles.dropdownContainer, { backgroundColor: colors.secondaryContainer } ]}
         />
       </View>
 
       <TouchableOpacity
         style={[
           styles.button,
-          { backgroundColor: selectedDifficulty && selectedCategory ? colors.primary : '#ccc' }
+          { backgroundColor: selectedDifficulty && selectedCategory ? colors.outline : '#ccc' }
         ]}
         onPress={() => {
           if (selectedDifficulty && selectedCategory) {

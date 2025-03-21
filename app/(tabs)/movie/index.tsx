@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, Text, TextInput, FlatList, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { useTheme, ActivityIndicator } from 'react-native-paper';
+import { useTheme, ActivityIndicator, Surface } from 'react-native-paper';
 import { useMoviesStore } from '@/contexts/api/movie';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -25,7 +25,7 @@ export default function Movie() {
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
       <TextInput
-        style={[styles.searchBar, { backgroundColor: colors.surface, color: colors.onSurface }]}
+        style={[styles.searchBar, { backgroundColor: colors.surface, color: colors.surface }]}
         placeholder="Search Movies..."
         placeholderTextColor={colors.onSurfaceVariant}
         value={query}
@@ -59,7 +59,7 @@ const MovieSection = ({ title, movies }: { title: string; movies: any[] }) => {
   const { colors } = useTheme();
   return (
     <View style={styles.sectionContainer}>
-      <Text style={[styles.sectionTitle, { color: colors.error }]}>{title}</Text>
+      <Text style={[styles.sectionTitle, { color: colors.primary }]}>{title}</Text>
       <FlatList
         horizontal
         data={movies}
@@ -72,9 +72,18 @@ const MovieSection = ({ title, movies }: { title: string; movies: any[] }) => {
 };
 
 const MovieCard = ({ movie }: { movie: any }) => {
+  const { colors } = useTheme();
   return (
     <TouchableOpacity style={styles.card}>
-      <Image source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }} style={styles.poster} />
+      <Surface style={[styles.surface, { backgroundColor: colors.surface, shadowColor: colors.shadow }]}>
+        <Image
+          source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
+          style={styles.poster}
+        />
+        <Text numberOfLines={1} style={[styles.movieTitle, { color: colors.onSurface }]}>
+          {movie.title || movie.name}
+        </Text>
+      </Surface>
     </TouchableOpacity>
   );
 };
@@ -84,6 +93,9 @@ const styles = StyleSheet.create({
   searchBar: { padding: hp(1.5), borderRadius: wp(2), marginBottom: hp(2), fontSize: wp(4) },
   sectionContainer: { marginBottom: hp(3) },
   sectionTitle: { fontSize: wp(5), fontWeight: '600', marginBottom: hp(1) },
-  card: { marginRight: wp(3), width: wp(30), height: hp(20), borderRadius: wp(2), overflow: 'hidden' },
-  poster: { width: '100%', height: '100%', borderRadius: wp(2) },
+  card: { marginRight: wp(3), width: wp(30) },
+  surface: { borderRadius: wp(2), elevation: 4, paddingBottom: hp(1), alignItems: 'center' },
+  poster: { width: '100%', height: hp(20), borderTopLeftRadius: wp(2), borderTopRightRadius: wp(2) },
+  movieTitle: { marginTop: hp(0.8), fontSize: wp(3.2), textAlign: 'center', fontWeight: '500' },
 });
+

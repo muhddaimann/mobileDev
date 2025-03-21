@@ -53,50 +53,58 @@ export default function Trivia() {
         </View>
       ) : showResults ? (
         <View style={styles.resultsContainer}>
-          <Text style={styles.resultsText}>Quiz Completed!</Text>
-          <Text style={styles.scoreText}>Your Score: {score} / {questions.length}</Text>
-          <TouchableOpacity style={styles.restartButton} onPress={() => setQuizStarted(false)}>
-            <Text style={styles.restartText}>Restart Quiz</Text>
+          <Text style={[styles.resultsText, { color: colors.primary }]}>Quiz Completed!</Text>
+          <Text style={[styles.scoreText, { color: colors.onBackground }]}>Your Score: {score} / {questions.length}</Text>
+          <TouchableOpacity style={[styles.restartButton, { backgroundColor: colors.primary }]} onPress={() => setQuizStarted(false)}>
+            <Text style={[styles.restartText, { color: colors.onPrimary }]}>Restart Quiz</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.questionContainer}>
-          <Text style={styles.questionCount}>Question {currentQuestionIndex + 1} of {questions.length}</Text>
-          <Text style={styles.questionText}>{questions[currentQuestionIndex].question}</Text>
+          <Text style={[styles.questionCount, { color: colors.onBackground }]}>
+            Question {currentQuestionIndex + 1} of {questions.length}
+          </Text>
 
-          {[
-            ...questions[currentQuestionIndex].incorrect_answers,
-            questions[currentQuestionIndex].correct_answer,
-          ]
+          <Text style={[styles.questionText, { color: colors.primary }]}>
+            {questions[currentQuestionIndex].question}
+          </Text>
+
+          {[...questions[currentQuestionIndex].incorrect_answers, questions[currentQuestionIndex].correct_answer]
             .sort(() => Math.random() - 0.5)
-            .map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  styles.optionButton,
-                  selectedAnswer === option
-                    ? option === questions[currentQuestionIndex].correct_answer
-                      ? styles.correctAnswer
-                      : styles.wrongAnswer
-                    : null,
-                ]}
-                onPress={() => handleAnswerSelection(option)}
-                disabled={!!selectedAnswer}
-              >
-                <Text style={styles.optionText}>{option}</Text>
-              </TouchableOpacity>
-            ))}
+            .map((option, index) => {
+              const isCorrect = option === questions[currentQuestionIndex].correct_answer;
+              const isSelected = selectedAnswer === option;
+
+              let backgroundColor = colors.surface;
+              if (isSelected) {
+                backgroundColor = isCorrect ? '#4CAF50' : '#FF3D00';
+              }
+
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={[styles.optionButton, { backgroundColor }]}
+                  onPress={() => handleAnswerSelection(option)}
+                  disabled={!!selectedAnswer}
+                >
+                  <Text style={[styles.optionText, { color: colors.onSurface }]}>
+                    {option}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
         </View>
       )}
     </View>
   );
 }
 
+
 const styles = StyleSheet.create({
   container: { flex: 1, padding: wp(5), justifyContent: 'center' },
   loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   questionContainer: { alignItems: 'center', paddingVertical: wp(5) },
-  questionCount: { fontSize: 18, fontWeight: 'bold', color: '#666' },
+  questionCount: { fontSize: 18, fontWeight: 'bold' },
   questionText: { fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginVertical: wp(4) },
   optionButton: {
     width: '90%',
@@ -104,22 +112,19 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f0f0f0',
     marginVertical: wp(2),
     elevation: 3,
   },
-  optionText: { fontSize: 16, fontWeight: 'bold', color: '#333' },
-  correctAnswer: { backgroundColor: '#4CAF50' },
-  wrongAnswer: { backgroundColor: '#FF3D00' },
+  optionText: { fontSize: 16, fontWeight: 'bold' },
   resultsContainer: { alignItems: 'center' },
   resultsText: { fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: wp(4) },
-  scoreText: { fontSize: 20, fontWeight: 'bold', color: '#333', marginBottom: wp(4) },
+  scoreText: { fontSize: 20, fontWeight: 'bold', marginBottom: wp(4) },
   restartButton: {
-    backgroundColor: '#007AFF',
     paddingVertical: wp(3),
     paddingHorizontal: wp(5),
     borderRadius: 12,
     elevation: 3,
   },
-  restartText: { fontSize: 18, fontWeight: 'bold', color: '#fff' },
+  restartText: { fontSize: 18, fontWeight: 'bold' },
 });
+
