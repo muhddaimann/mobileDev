@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
-import { View, ScrollView, Image, TouchableOpacity, StyleSheet, ImageLoadEventData, NativeSyntheticEvent, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, StyleSheet, ImageLoadEventData, NativeSyntheticEvent, ActivityIndicator, Text, Animated } from 'react-native';
 import { useImgFlipStore } from '@/contexts/api/imgFlip';
 import { useTheme } from 'react-native-paper';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 export default function Meme() {
   const { colors } = useTheme();
   const { templates, fetchTemplates } = useImgFlipStore();
   const [imageData, setImageData] = useState<Record<string, { height: number; isWide: boolean }>>({});
   const [loading, setLoading] = useState(true);
+  const [selectedMeme, setSelectedMeme] = useState<{ id: string; name: string } | null>(null);
+  const fadeAnim = useState(new Animated.Value(0))[0];
 
   useEffect(() => {
     fetchTemplates().finally(() => setLoading(false));
@@ -39,6 +41,17 @@ export default function Meme() {
     }
   };
 
+  const handleLongPress = (id: string, name: string) => {
+    setSelectedMeme({ id, name });
+    fadeAnim.setValue(1);
+    
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 2000,
+      useNativeDriver: true,
+    }).start(() => setSelectedMeme(null));
+  };
+
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
@@ -52,7 +65,7 @@ export default function Meme() {
       <View style={styles.masonryContainer}>
         <View style={styles.column}>
           {leftColumn.map((item) => (
-            <TouchableOpacity key={item.id} style={styles.memeItem}>
+            <TouchableOpacity key={item.id} style={styles.memeItem} onLongPress={() => handleLongPress(item.id, item.name)}>
               <View style={styles.imageWrapper}>
                 <Image
                   source={{ uri: item.url }}
@@ -63,6 +76,11 @@ export default function Meme() {
                   resizeMode={imageData[item.id]?.isWide ? "contain" : "cover"} 
                   onLoad={(event) => handleImageLoad(event, item.id)}
                 />
+                {selectedMeme?.id === item.id && (
+                  <Animated.View style={[styles.memeNameContainer, { opacity: fadeAnim }]}>
+                    <Text style={styles.memeName}>{selectedMeme?.name ?? ''}</Text>
+                  </Animated.View>
+                )}
               </View>
             </TouchableOpacity>
           ))}
@@ -70,7 +88,7 @@ export default function Meme() {
 
         <View style={styles.column}>
           {rightColumn.map((item) => (
-            <TouchableOpacity key={item.id} style={styles.memeItem}>
+            <TouchableOpacity key={item.id} style={styles.memeItem} onLongPress={() => handleLongPress(item.id, item.name)}>
               <View style={styles.imageWrapper}>
                 <Image
                   source={{ uri: item.url }}
@@ -81,6 +99,11 @@ export default function Meme() {
                   resizeMode={imageData[item.id]?.isWide ? "contain" : "cover"}
                   onLoad={(event) => handleImageLoad(event, item.id)}
                 />
+                {selectedMeme?.id === item.id && (
+                  <Animated.View style={[styles.memeNameContainer, { opacity: fadeAnim }]}>
+                    <Text style={styles.memeName}>{selectedMeme?.name ?? ''}</Text>
+                  </Animated.View>
+                )}
               </View>
             </TouchableOpacity>
           ))}
@@ -104,4 +127,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   memeImage: { width: '100%', borderRadius: 12 },
+  memeNameContainer: {
+    position: 'absolute',
+    bottom: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+  },
+  memeName: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
 });

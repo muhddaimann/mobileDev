@@ -1,7 +1,13 @@
 mobileDev/
 ├─ app/
 │  ├─ (tabs)/
+│  │  ├─ color/
+│  │  │  ├─ _layout.tsx
+│  │  │  └─ index.tsx
 │  │  ├─ home/
+│  │  │  ├─ _layout.tsx
+│  │  │  └─ index.tsx
+│  │  ├─ meme/
 │  │  │  ├─ _layout.tsx
 │  │  │  └─ index.tsx
 │  │  ├─ movie/
@@ -13,9 +19,10 @@ mobileDev/
 │  │  └─ _layout.tsx
 │  ├─ _layout.tsx
 │  ├─ goodbye.tsx
-│  ├─ welcome.tsx
-│  └─ index.tsx
+│  ├─ index.tsx
+│  └─ welcome.tsx
 ├─ assets/
+│  ├─ fonts/
 │  └─ images/
 ├─ components/
 │  ├─ home/
@@ -29,6 +36,8 @@ mobileDev/
 ├─ contexts/
 │  ├─ api/
 │  │  ├─ api.tsx
+│  │  ├─ color.tsx
+│  │  ├─ imgFlip.tsx
 │  │  └─ movie.tsx
 │  └─ modeContext.tsx
 ├─ hooks/

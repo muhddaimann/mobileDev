@@ -15,8 +15,8 @@ export default function Welcome() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.text, { color: colors.primary }]}>Welcome Back!</Text>
-      <ActivityIndicator animating size="large" color={colors.primary} style={styles.loader} />
+      <Text style={[styles.text, { color: colors.onBackground }]}>Welcome Back!</Text>
+      <ActivityIndicator animating size="large" color={colors.onBackground} style={styles.loader} />
     </View>
   );
 }

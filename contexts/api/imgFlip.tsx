@@ -54,7 +54,7 @@ export const useImgFlipStore = create<ImgFlipState>((set) => ({
       set({ loading: true, error: null });
       const response = await axios.get(`${BASE_URL}/get_memes`);
       if (response.data.success) {
-        set({ trendingMemes: response.data.data.memes.slice(0, 10), loading: false }); // Get top 10 memes
+        set({ trendingMemes: response.data.data.memes.slice(0, 10), loading: false });
       } else {
         set({ error: 'Failed to fetch trending memes', loading: false });
       }
